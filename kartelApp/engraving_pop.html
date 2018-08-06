@@ -1,0 +1,374 @@
+
+<input type="button" class="btn" name="answer" value="Engrave..." onclick="showDiv()" />
+
+<div id="welcomeDiv" class="popup_watch_main" style="display:none;" >
+  <div class="popup_watch_outer">
+    <div class="popup_inner">
+      
+      <!-----------Text only---------->
+      <div class="popup_left" id="textOnly">
+        <img src="{{ 'caseback2.png' | asset_url }}" alt="" />
+       
+        <div class="popup_table_absolute">
+          <div class="popup_table">
+            <div class="popup_table_cell">
+              <span id="message1" class="popup_type_text1">
+
+              </span>
+              <span id="message2" class="popup_type_text2">
+
+              </span>
+              <span id="message3" class="popup_type_text3">
+
+              </span>
+            </div>
+          </div>
+        </div>  
+      </div>
+    
+      <button class="close_pop" type="button" onclick="hidePopDiv()"><img src="{{ 'imgpsh_fullsize_close.png' | asset_url }}" alt="" /></button>
+      <div class="pop_up_right"> 
+        <h1>FREE ENGRAVING</h1>
+        <div id="tabs">
+          <ul>
+            <li><a href="#tabs-1" id="tab1">Text Only</a></li>
+            <li><a href="#tabs-2" id="tab2">Image & Text</a></li>
+          </ul>
+
+          <!----------First-tab---------->
+          <div id="tabs-1" class="clearfix">
+            <h6>Enter your message below</h6>
+            <div class="popup_right_field">
+              <div class="popup_field_inner">
+                <input id="input_mess1" type="text" placeholder="Line 1" id="msg1_{{ product.variants.first.id }}"> 
+                <span class="message_num">0</span><span>/15</span>
+              </div>
+              <div class="popup_field_inner">
+                <input id="input_mess2" type="text" placeholder="Line 2" maxlength="15" id="msg2_{{ product.variants.first.id }}"> 
+                <span class="message_num">0</span><span>/15</span>
+              </div>
+              <div class="popup_field_inner">
+                <input id="input_mess3" type="text" placeholder="Line 3" maxlength="15" id="msg3_{{ product.variants.first.id }}"> 
+                <span class="message_num">0</span><span>/15</span>
+              </div>
+            </div>
+
+            <div class="popup_submit">
+              <input type="button" value="CHECKOUT" onclick="addTocart()">
+            </div>
+          </div>
+          <!----------Second-tab---------->
+          <div id="tabs-2"  class="clearfix">
+            <h6>Choose your image from category below: </h6>
+            <div class="popup_field_inner">
+              <select id="LogoCat">
+                <option value="cat_0" selected="selected">Upload own image</option>
+                {% for i in (1..6) %}
+                {% capture CatEnable %}Category_{{ i }}_enabled{% endcapture %}
+                {% capture CatName %}logocategory_{{ i }}{% endcapture %}
+                {% if settings[CatEnable] %}
+                <option value="cat_{{ i }}">{{ settings[CatName] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="popup_field_inner" id="UploadFile">
+              <label>
+                <input type="file" id="uploadImg">
+                <span id="selectFile">Select your file to upload</span>
+                <span class="browseBtn">Browse</span>
+              </label>
+              <div class="guideLines">See our guidelines <a href="#">here</a></div>
+            </div>
+            <div class="ImageGallery" style="display:none;" id="getImg">
+             
+              <div id="cat_1" style="display:none;">
+
+                {% capture CatEnable %}Category_1_enabled{% endcapture %}
+                {% if settings[CatEnable] %}
+                {% for j in (1..100) %}
+
+                {% capture logoImageEnable %}badge1_{{ j }}_enabled{% endcapture %}
+                {% capture logoImage %}badge1_{{ j }}.jpg{% endcapture %}
+                {% capture logoName %}badge1_{{ j }}_text{% endcapture %}
+                {% if settings[logoImageEnable] %}
+                <label class="imgsWrap">
+                  <input type="radio" name="radioName" value='{{ logoImage | asset_url | img_tag }}' data-logoName="{{ settings[logoName] }}" />
+                  <span> {{ logoImage | asset_url | img_tag }}<span>{{ settings[logoName] }}</span></span>
+                  
+                </label>
+                {% endif %}
+
+                {% endfor %}
+                {% endif %}
+
+              </div>
+              <div id="cat_2" style="display:none;">
+
+                {% capture CatEnable %}Category_2_enabled{% endcapture %}
+                {% if settings[CatEnable] %}
+                {% for j in (1..100) %}
+
+                {% capture logoImageEnable %}badge2_{{ j }}_enabled{% endcapture %}
+                {% capture logoImage %}badge2_{{ j }}.jpg{% endcapture %}
+                {% capture logoName %}badge2_{{ j }}_text{% endcapture %}
+                {% if settings[logoImageEnable] %}
+                <label class="imgsWrap">
+                 <input type="radio" name="radioName" value='{{ logoImage | asset_url | img_tag }}' />
+                  <span> {{ logoImage | asset_url | img_tag }}<span>{{ settings[logoName] }}</span></span>
+                </label>
+                {% endif %}
+
+                {% endfor %}
+                {% endif %}
+              </div>
+             
+              
+              
+             
+            </div>
+            
+            <div class="guideLines">Enter your message below</div>
+            <div class="popup_field_inner">
+              <input id="input_mess4" type="text" placeholder="Add text" maxlength="15" id="msg4_{{ product.variants.first.id }}"> 
+              <span class="message_num">0</span><span>/15</span>
+            </div>
+
+
+            <div class="popup_submit">
+              <input type="button" value="CHECKOUT" id="AddImages">
+            </div>
+
+
+          </div>
+        </div>        
+      </div>
+      <span id="bottomMsg" align="center"> For Illustrative Purposes Only. Engraved watches are non-returnable unless faulty. </span>
+
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+  function showDiv() {
+    document.getElementById('welcomeDiv').style.display = "block";
+
+    var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
+
+    root.setAttribute( 'class', 'mypopup' );  
+
+  }
+
+
+  function hidePopDiv() {
+
+    document.getElementById('welcomeDiv').style.display = "none";
+
+    $("html").removeClass("mypopup");
+  }
+  function addTocart()
+  {
+
+    var line1Msg = $("#input_mess1").val();
+
+
+    var line2Msg = $("#input_mess2").val();
+
+
+    var line3Msg = $("#input_mess3").val();
+
+
+    var data={quantity: 1,id:'29611068867',
+              properties: {
+                'Line 1': line1Msg,
+                'Line 2':line2Msg,
+                'Line 3':line3Msg
+              }
+             };
+    $.ajax({
+      url: '/cart/add.js',
+      dataType: 'json',
+      type: 'post',
+      data: data,
+      success: function(itemData) {
+        $('#AddToCart').trigger('click');
+        // Re-enable add to cart button.
+
+
+        return ;
+        //addPersonalizeItem
+
+
+      }, 
+      error: function(XMLHttpRequest) {
+        var response = eval('(' + XMLHttpRequest.responseText + ')');
+        response = response.description;
+        alert(response);
+
+      }
+    });
+  }
+
+
+</script>
+
+<script type="text/javascript">
+
+  //   $('.popup_field_inner input').keyup(updateCount);
+  // $('.popup_field_inner input').keydown(updateCount);
+
+  // function updateCount() {
+  //     var cs = $(this).val().length;
+  //   $(this).closest('.popup_field_inner').find('.message_num').text(cs);
+
+  // }
+
+  var maxLen = 15;
+  $('.popup_field_inner input').keypress(function(event){
+    var Length = $(this).val().length;
+    $(this).closest('.popup_field_inner').find('.message_num').text(Length);
+    if(Length >= maxLen){
+      if (event.which != 8) {
+        return false;
+      }
+    }
+  });
+
+
+
+  $("#input_mess1").keyup(function(){
+    var newVideoName = $("#input_mess1").val();
+    $("#message1").text(newVideoName);
+
+  });
+  $("#input_mess2").keyup(function(){
+    var newVideoName = $("#input_mess2").val();
+    $("#message2").text(newVideoName);
+
+  });
+  $("#input_mess3").keyup(function(){
+    var newVideoName = $("#input_mess3").val();
+    $("#message3").text(newVideoName);
+  });
+  
+</script>
+
+<script>
+  /* Code for uploading logo image */
+
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+
+  
+  $('#getImg input').on('change', function() {
+    var imgValue = $('input[name=radioName]:checked','#getImg').val(); 
+    $("#getLogoImg").html(imgValue);
+  });
+   
+ 
+  /* To hide and display tabs code */
+  $('#tab1').click(function(e){
+    $('#textOnly').css('display','block');
+    $('#textImages').css('display','none');
+  });
+  $('#tab2').click(function(e){
+    $('#textOnly').css('display','none');
+    $('#textImages').css('display','block');
+  });
+  
+  /* Image gallery code */
+  $('#LogoCat').change(function(){
+    var category = $( "#LogoCat option:selected" ).val();
+    //alert(category);
+    if(category != 'cat_0' )
+    {
+      $('.ImageGallery').css('display','block');
+      $('[id^=cat]').hide();
+      $('#'+category).css('display','block');
+      $('#UploadFile').css('display','none');
+      $('#UserUpload').css('display','none');
+      $('#getLogoImg').css('display','block');
+    }
+    else
+    {
+      $('.ImageGallery').css('display','none');
+      $('#UploadFile').css('display','block');
+      $('#getLogoImg').css('display','none');
+      $('#UserUpload').css('display','block');
+    }
+  });
+
+  /* Add to cart code goes here */
+  $(document).ready(function(){
+
+    $('#AddImages').click(function(e){  
+      //alert('hi');
+      var LogoCategory  = $('#LogoCat option:selected').text();
+      
+      if(LogoCategory == 'Upload own image')
+      {
+        var UploadedImg = $('#uploadImg').val();
+      }
+      else
+      {
+        //var selectedLogo = $('#getImg input').attr('data-logoName');
+        var selectedLogo = $('input[name=radioName]:checked','#getImg').attr('data-logoName');
+      }
+      var line4Msg = $("#input_mess4").val();
+      var data={quantity: 1,id:'29611068867',
+                properties: {
+                  'Logo category': LogoCategory,
+                  'Selected logo': selectedLogo,
+                  'Uploaded image': UploadedImg,
+                  'Message':line4Msg
+                }
+               };
+      $.ajax({
+        url: '/cart/add.js',
+        dataType: 'json',
+        type: 'post',
+        data: data,
+        success: function(itemData) {
+          $('#AddToCart').trigger('click');
+
+          return ;
+
+        }, 
+        error: function(XMLHttpRequest) {
+          var response = eval('(' + XMLHttpRequest.responseText + ')');
+          response = response.description;
+          alert(response);
+
+        }
+      });
+    });
+
+  });
+
+</script>   
+
+
+Hello Sir,
+
+Greetings of the day!!
+
+Today i have worked on following tasks:
+
+=>Work on uri shopify site on following tasks:
+->making changes on canvas
+->adding new function of clearing canvas
+URL: https://checkout.rechargeapps.com/r/purchase/thanks/8c077060-4f6c-11e8-8c77-0242ac110003/55380388/?shop_url=juvi-development.myshopify.com
+
+=>Worked on Ming lee shopify site on adding new section on all product page templates and checking the new section
+URL: https://straptitude.com/
+
+=>Worked on Aaron shopify site on following site:
+->Creating new section of projects
+->Fixing the slider issue
+URL: https://www.oopenspace.com/
+
+Thanks & Regards
