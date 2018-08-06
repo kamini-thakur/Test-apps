@@ -1,0 +1,7 @@
+<script>
+              function myfunction()
+              { 
+                alert('hello'); 
+              }
+              myfunction();
+              </script>
